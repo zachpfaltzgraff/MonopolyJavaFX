@@ -18,7 +18,6 @@ import java.io.IOException;
 
 public class HelloApplication extends Application {
     private final GridPane gameGrid = new GridPane();
-    private final StackPane stackPane = new StackPane();
     GameBoard gameBoard = new GameBoard();
     @Override
     public void start(Stage stage) throws IOException {
@@ -90,16 +89,10 @@ public class HelloApplication extends Application {
     }
 
     public void setGraphics() {
-        // Load the image
-        ImageView imageView = new ImageView("file:sprites/icon.png");
-        imageView.setFitWidth(138.75);
-        imageView.setFitHeight(120);
+        // start Square
+        ImageView imageView = new ImageView("file:sprites/start.png");
+        gameGrid.add(imageView, 0, 0);
 
-        // Add the image to the stack pane
-        stackPane.getChildren().add(imageView);
-
-        // Add the GridPane on top of the image
-        gameGrid.add(stackPane, 0, 0);
     }
 
     public static void main(String[] args) {
