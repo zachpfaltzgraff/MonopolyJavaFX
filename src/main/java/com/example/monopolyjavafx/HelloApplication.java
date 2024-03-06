@@ -16,6 +16,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class HelloApplication extends Application {
     private final GridPane gameGrid = new GridPane();
@@ -25,7 +26,7 @@ public class HelloApplication extends Application {
         setGraphics();
         createGameGrid();
 
-        gameGrid.setGridLinesVisible(true); // testing
+        //gameGrid.setGridLinesVisible(true); // testing
 
         Scene scene = new Scene(gameGrid, 925, 800);
         stage.setTitle("Monopoly");
@@ -94,17 +95,42 @@ public class HelloApplication extends Application {
         ImageView imageView = new ImageView("file:sprites/start.png");
         gameGrid.add(imageView, 0, 0);
 
-        addBrownCell(1, 0);
-        addBrownCell(3, 0);
+        // Middle Square
+        ImageView centerImage = new ImageView("file:sprites/icon.png");
+        gameGrid.add(centerImage, 4, 4);
+        GridPane.setHalignment(centerImage, HPos.CENTER);
+
+        addTopBottomCell(1, 0, "brown");
+        addTopBottomCell(3, 0, "brown");
+        addTopBottomCell(5, 0, "lblue");
+        addTopBottomCell(7, 0, "lblue");
+
+        addTopBottomCell(7, 8, "orange");
+        addTopBottomCell(5, 8, "orange");
+        addTopBottomCell(3, 8, "purple");
+        addTopBottomCell(1, 8, "purple");
     }
 
-    private void addBrownCell(int column, int row) {
+    private void addTopBottomCell(int column, int row, String color) {
         Pane cell = new Pane();
         cell.setMaxHeight(50);
-        cell.setStyle("-fx-background-color: brown;");
+
+        if (color.equals("brown")) {
+            cell.setStyle("-fx-background-color: brown;");
+        }
+        else if (color.equals("lblue")) {
+            cell.setStyle("-fx-background-color: lightblue;");
+        }
+        else if (color.equals("orange")) {
+            cell.setStyle("-fx-background-color: orange;");
+        }
+        else if (color.equals("purple")) {
+            cell.setStyle("-fx-background-color: rgb(238, 120, 238);");
+        }
         gameGrid.add(cell, column, row);
         GridPane.setValignment(cell, VPos.TOP);
     }
+
 
     public static void main(String[] args) {
         launch();
