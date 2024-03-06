@@ -1,6 +1,9 @@
 package com.example.monopolyjavafx;
 
 public class GameBoard {
+    /**
+     * Holds the name of the grid squares, properties
+     */
     private String[][] GameGrid = new String[11][11];
 
     /**
@@ -19,6 +22,15 @@ public class GameBoard {
     private int[][] gameLogic = new int[11][11];
 
     GameBoard() {
+        initializeGameGrid();
+        initializeGameLogic();
+    }
+
+    private void initializeGameGrid() {
         GameGrid[0][0] = "Start";
+    }
+
+    private void initializeGameLogic() {
+        gameLogic[0][0] = 8;
     }
 }
