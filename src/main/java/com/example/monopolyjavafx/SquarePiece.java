@@ -7,8 +7,19 @@ public class SquarePiece {
     private double price;
 
     SquarePiece() {
-
+        this.name = "";
+        this.type = -1;
+        this.occupied = -1;
+        this.price = -1;
     }
+
+    SquarePiece(String name, int type, double price) {
+        this.name = name;
+        this.type = type;
+        this.occupied = 0;
+        this.price = price;
+    }
+
 
     public String getName() {
         return name;
