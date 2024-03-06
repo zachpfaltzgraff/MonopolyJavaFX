@@ -21,21 +21,21 @@ public class GameBoard extends SquarePiece {
     private void initializePieces() {
         squarePieces[0][0] =
                 new SquarePiece("Start", 8, 0);
-        squarePieces[0][1] =
+        squarePieces[1][0] =
                 new SquarePiece("Mediterranean Ave.", 0, 60);
-        squarePieces[0][2] =
+        squarePieces[2][0] =
                 new SquarePiece("Community Chest", 3, 0);
-        squarePieces[0][3] =
+        squarePieces[3][0] =
                 new SquarePiece("Baltic Ave.", 0, 60);
-        squarePieces[0][4] =
+        squarePieces[4][0] =
                 new SquarePiece("Reading Railroad", 1, 200);
-        squarePieces[0][5] =
+        squarePieces[5][0] =
                 new SquarePiece("Oriental Ave.", 0, 100);
-        squarePieces[0][6] =
+        squarePieces[6][0] =
                 new SquarePiece("Chance", 4, 0);
-        squarePieces[0][7] =
+        squarePieces[7][0] =
                 new SquarePiece("Vermont Ave.", 0, 110);
-        squarePieces[0][8] =
+        squarePieces[8][0] =
                 new SquarePiece("Jail", 6, 0);
 
         squarePieces[1][8] =
@@ -69,22 +69,22 @@ public class GameBoard extends SquarePiece {
                 new SquarePiece("Water Works", 2, 150);
         squarePieces[8][1] =
                 new SquarePiece("Tennessee Ave.", 0, 260);
-        squarePieces[8][0] =
+        squarePieces[0][8] =
                 new SquarePiece("Go to Jail", 5, 0);
 
-        squarePieces[7][0] =
+        squarePieces[0][7] =
                 new SquarePiece("Pacific Ave.", 0, 300);
-        squarePieces[6][0] =
+        squarePieces[0][6] =
                 new SquarePiece("Community Chest", 3, 0);
-        squarePieces[5][0] =
+        squarePieces[0][5] =
                 new SquarePiece("NC Ave.", 0, 320);
-        squarePieces[4][0] =
+        squarePieces[0][4] =
                 new SquarePiece("Short Line", 1, 200);
-        squarePieces[3][0] =
+        squarePieces[0][3] =
                 new SquarePiece("park Place", 0, 350);
-        squarePieces[2][0] =
+        squarePieces[0][2] =
                 new SquarePiece("Luxury Tax", 2, 100);
-        squarePieces[1][0] =
+        squarePieces[0][1] =
                 new SquarePiece("Boardwalk", 0, 400);
 
         for (int i = 0; i < squarePieces.length; i++) {
@@ -98,5 +98,9 @@ public class GameBoard extends SquarePiece {
 
     public String getName(int row, int col) {
         return squarePieces[row][col].getName();
+    }
+
+    public double getPrice(int row, int col) {
+        return squarePieces[row][col].getPrice();
     }
 }

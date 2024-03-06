@@ -3,29 +3,33 @@ package com.example.monopolyjavafx;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class HelloApplication extends Application {
-    private GridPane gameGrid = new GridPane();
+    private final GridPane gameGrid = new GridPane();
+    private final StackPane stackPane = new StackPane();
     GameBoard gameBoard = new GameBoard();
     @Override
     public void start(Stage stage) throws IOException {
         createGameGrid();
+        setGraphics();
 
         gameGrid.setGridLinesVisible(true); // testing
 
-        Scene scene = new Scene(gameGrid, 800, 800);
+        Scene scene = new Scene(gameGrid, 925, 800);
         stage.setTitle("Monopoly");
-        Image icon = new Image("../icon.png");
-        stage.getIcons().add(icon);
+        stage.getIcons().add(new Image("file:sprites/icon.png"));
         stage.setScene(scene);
         stage.show();
     }
@@ -52,7 +56,6 @@ public class HelloApplication extends Application {
             gameGrid.getColumnConstraints().add(colConstraints);
         }
 
-
         int numRows = 9;
         int numCols = 9;
         for (int row = 0; row < numRows; row++) {
@@ -62,15 +65,41 @@ public class HelloApplication extends Application {
                 label.setAlignment(Pos.CENTER);
                 if (!gameBoard.getName(row, col).isEmpty()) {
                     label.setText(gameBoard.getName(row, col));
+
+                    if (gameBoard.getPrice(row,col) > 0) {
+                        Label priceLabel = new Label("$" + gameBoard.getPrice(row, col));
+                        gameGrid.add(priceLabel, row, col);
+
+                        priceLabel.setFont(new Font("Lato", 16));
+                        priceLabel.setTextAlignment(TextAlignment.CENTER);
+                        GridPane.setHalignment(priceLabel, HPos.CENTER);
+                        GridPane.setValignment(priceLabel, VPos.BOTTOM);
+                    }
                 }
                 else {
                     label.setText("(" + row + "," + col + ")");
                 }
 
                 gameGrid.add(label, row, col);
-                gameGrid.setHalignment(label, HPos.CENTER);
+                label.setFont(new Font("Lato", 16));
+                label.setTextAlignment(TextAlignment.CENTER);
+                GridPane.setHalignment(label, HPos.CENTER);
+                GridPane.setValignment(label, VPos.TOP);
             }
         }
+    }
+
+    public void setGraphics() {
+        // Load the image
+        ImageView imageView = new ImageView("file:sprites/icon.png");
+        imageView.setFitWidth(138.75);
+        imageView.setFitHeight(120);
+
+        // Add the image to the stack pane
+        stackPane.getChildren().add(imageView);
+
+        // Add the GridPane on top of the image
+        gameGrid.add(stackPane, 0, 0);
     }
 
     public static void main(String[] args) {
