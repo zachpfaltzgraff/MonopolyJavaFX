@@ -5,6 +5,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,8 +22,8 @@ public class HelloApplication extends Application {
     GameBoard gameBoard = new GameBoard();
     @Override
     public void start(Stage stage) throws IOException {
-        createGameGrid();
         setGraphics();
+        createGameGrid();
 
         gameGrid.setGridLinesVisible(true); // testing
 
@@ -33,7 +34,7 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
-    public void createGameGrid() {
+    private void createGameGrid() {
 
         for (int i = 0; i < 9; i++) {
             RowConstraints rowConstraints = new RowConstraints();
@@ -88,11 +89,21 @@ public class HelloApplication extends Application {
         }
     }
 
-    public void setGraphics() {
+    private void setGraphics() {
         // start Square
         ImageView imageView = new ImageView("file:sprites/start.png");
         gameGrid.add(imageView, 0, 0);
 
+        addBrownCell(1, 0);
+        addBrownCell(3, 0);
+    }
+
+    private void addBrownCell(int column, int row) {
+        Pane cell = new Pane();
+        cell.setMaxHeight(50);
+        cell.setStyle("-fx-background-color: brown;");
+        gameGrid.add(cell, column, row);
+        GridPane.setValignment(cell, VPos.TOP);
     }
 
     public static void main(String[] args) {
