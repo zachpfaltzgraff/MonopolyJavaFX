@@ -14,8 +14,9 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         createGameGrid();
+        gameGrid.setGridLinesVisible(true);
 
-        Scene scene = new Scene(gameGrid, 1080, 720);
+        Scene scene = new Scene(gameGrid, 800, 800);
         stage.setTitle("Monopoly");
         stage.setScene(scene);
         stage.show();
