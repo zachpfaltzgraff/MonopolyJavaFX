@@ -115,7 +115,7 @@ public class HelloApplication extends Application {
         Pane cell = new Pane();
         cell.setMaxHeight(50);
         cell.setStyle("-fx-background-color: "  + color + ";");
-        
+
         gameGrid.add(cell, column, row);
         GridPane.setValignment(cell, VPos.TOP);
     }
