@@ -35,7 +35,6 @@ public class HelloApplication extends Application {
     }
 
     private void createGameGrid() {
-
         for (int i = 0; i < 9; i++) {
             RowConstraints rowConstraints = new RowConstraints();
             if (i == 0 || i == 8) {
@@ -56,10 +55,8 @@ public class HelloApplication extends Application {
             gameGrid.getColumnConstraints().add(colConstraints);
         }
 
-        int numRows = 9;
-        int numCols = 9;
-        for (int row = 0; row < numRows; row++) {
-            for (int col = 0; col < numCols; col++) {
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
                 Label label = new Label();
                 label.setWrapText(true);
                 label.setAlignment(Pos.CENTER);
