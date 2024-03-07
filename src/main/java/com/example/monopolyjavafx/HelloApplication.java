@@ -104,7 +104,8 @@ public class HelloApplication extends Application {
     private void addOutlines(int column, int row) {
         Pane cell = new Pane();
 
-        BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1));
+        BorderStroke borderStroke =
+                new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1));
         Border border = new Border(borderStroke);
         cell.setBorder(border);
 
