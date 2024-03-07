@@ -102,31 +102,20 @@ public class HelloApplication extends Application {
 
         addTopBottomCell(1, 0, "brown");
         addTopBottomCell(3, 0, "brown");
-        addTopBottomCell(5, 0, "lblue");
-        addTopBottomCell(7, 0, "lblue");
+        addTopBottomCell(5, 0, "lightblue");
+        addTopBottomCell(7, 0, "lightblue");
 
         addTopBottomCell(7, 8, "orange");
         addTopBottomCell(5, 8, "orange");
-        addTopBottomCell(3, 8, "purple");
-        addTopBottomCell(1, 8, "purple");
+        addTopBottomCell(3, 8, "rgb(238, 120, 238)");
+        addTopBottomCell(1, 8, "rgb(238, 120, 238)");
     }
 
     private void addTopBottomCell(int column, int row, String color) {
         Pane cell = new Pane();
         cell.setMaxHeight(50);
-
-        if (color.equals("brown")) {
-            cell.setStyle("-fx-background-color: brown;");
-        }
-        else if (color.equals("lblue")) {
-            cell.setStyle("-fx-background-color: lightblue;");
-        }
-        else if (color.equals("orange")) {
-            cell.setStyle("-fx-background-color: orange;");
-        }
-        else if (color.equals("purple")) {
-            cell.setStyle("-fx-background-color: rgb(238, 120, 238);");
-        }
+        cell.setStyle("-fx-background-color: "  + color + ";");
+        
         gameGrid.add(cell, column, row);
         GridPane.setValignment(cell, VPos.TOP);
     }
