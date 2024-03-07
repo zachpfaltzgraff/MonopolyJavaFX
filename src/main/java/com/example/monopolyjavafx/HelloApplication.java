@@ -27,8 +27,6 @@ public class HelloApplication extends Application {
         setOutlines();
         createGameGrid();
 
-        //gameGrid.setGridLinesVisible(true); // testing
-
         Scene scene = new Scene(gameGrid, 925, 800);
         stage.setTitle("Monopoly");
         stage.getIcons().add(new Image("file:sprites/icon.png"));
@@ -79,7 +77,7 @@ public class HelloApplication extends Application {
                     }
                 }
                 else {
-                    //label.setText("(" + row + "," + col + ")");
+                    //label.setText("(" + row + "," + col + ")"); // debugging
                 }
 
                 gameGrid.add(label, row, col);
@@ -92,7 +90,6 @@ public class HelloApplication extends Application {
     }
 
     private void setOutlines() {
-        // Top and bottom row
         for (int i = 0; i < 8; i++) {
             addOutlines(i, 0);
             addOutlines(i, 8);
@@ -122,22 +119,38 @@ public class HelloApplication extends Application {
         gameGrid.add(centerImage, 4, 4);
         GridPane.setHalignment(centerImage, HPos.CENTER);
 
-        addTopBottomCell(1, 0, "brown");
-        addTopBottomCell(3, 0, "brown");
-        addTopBottomCell(5, 0, "lightblue");
-        addTopBottomCell(7, 0, "lightblue");
+        addTopBottomCell(1, 0, "brown", "top");
+        addTopBottomCell(3, 0, "brown", "top");
+        addTopBottomCell(5, 0, "lightblue", "top");
+        addTopBottomCell(7, 0, "lightblue", "top");
 
-        addTopBottomCell(7, 8, "orange");
-        addTopBottomCell(5, 8, "orange");
-        addTopBottomCell(3, 8, "rgb(238, 120, 238)");
-        addTopBottomCell(1, 8, "rgb(238, 120, 238)");
+        addTopBottomCell(7, 8, "orange", "top");
+        addTopBottomCell(5, 8, "orange", "top");
+        addTopBottomCell(3, 8, "rgb(238, 120, 238)", "top");
+        addTopBottomCell(1, 8, "rgb(238, 120, 238)", "top");
+
+        addTopBottomCell(0, 1, "blue", "side");
+        addTopBottomCell(0, 3, "blue", "side");
+        addTopBottomCell(0, 5, "purple", "side");
+        addTopBottomCell(0, 7, "purple", "side");
+
+        addTopBottomCell(8, 5, "red", "side");
+        addTopBottomCell(8, 7, "red", "side");
+        addTopBottomCell(8, 1, "green", "side");
+        addTopBottomCell(8, 3, "green", "side");
+
     }
 
-    private void addTopBottomCell(int column, int row, String color) {
+    private void addTopBottomCell(int column, int row, String color, String topOrSide) {
         Pane cell = new Pane();
-        cell.setMaxHeight(50);
-        cell.setStyle("-fx-background-color: "  + color + ";");
+        if (topOrSide.equals("top")) {
+            cell.setMaxHeight(50);
+        }
+        else if (topOrSide.equals("side")) {
+            cell.setMaxHeight(25);
+        }
 
+        cell.setStyle("-fx-background-color: "  + color + ";");
         gameGrid.add(cell, column, row);
         GridPane.setValignment(cell, VPos.TOP);
     }
