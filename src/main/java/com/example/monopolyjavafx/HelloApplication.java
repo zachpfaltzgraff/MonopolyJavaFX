@@ -24,6 +24,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         setGraphics();
+        setOutlines();
         createGameGrid();
 
         //gameGrid.setGridLinesVisible(true); // testing
@@ -78,7 +79,7 @@ public class HelloApplication extends Application {
                     }
                 }
                 else {
-                    label.setText("(" + row + "," + col + ")");
+                    //label.setText("(" + row + "," + col + ")");
                 }
 
                 gameGrid.add(label, row, col);
@@ -88,6 +89,26 @@ public class HelloApplication extends Application {
                 GridPane.setValignment(label, VPos.TOP);
             }
         }
+    }
+
+    private void setOutlines() {
+        // Top and bottom row
+        for (int i = 0; i < 8; i++) {
+            addOutlines(i, 0);
+            addOutlines(i, 8);
+            addOutlines(0, i);
+            addOutlines(8, i);
+        }
+    }
+
+    private void addOutlines(int column, int row) {
+        Pane cell = new Pane();
+
+        BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1));
+        Border border = new Border(borderStroke);
+        cell.setBorder(border);
+
+        gameGrid.add(cell, column, row);
     }
 
     private void setGraphics() {
