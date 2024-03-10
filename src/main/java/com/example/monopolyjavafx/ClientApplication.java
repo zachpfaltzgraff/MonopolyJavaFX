@@ -16,6 +16,8 @@ import java.net.Socket;
 public class ClientApplication extends Application {
     private final GridPane clientGrid = new GridPane();
     PrintWriter output;
+    private final int WIDTH = 300;
+    private final int HEIGHT = 550;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -25,7 +27,7 @@ public class ClientApplication extends Application {
         createControl();
         addButtons();
 
-        Scene scene = new Scene(clientGrid, 200, 450);
+        Scene scene = new Scene(clientGrid, WIDTH, HEIGHT);
         stage.setTitle("Monopoly Player");
         stage.getIcons().add(new Image("file:sprites/icon.png"));
         stage.setScene(scene);
@@ -34,20 +36,21 @@ public class ClientApplication extends Application {
 
     private void addButtons() {
         Button readyUp = new Button("Ready Up");
+        readyUp.setMinSize(20, 30);
         readyUp.setOnAction(event -> output.println("hello")); // Send "hello" to server
-        clientGrid.add(readyUp, 2, 0);
+        clientGrid.add(readyUp, 1, 0);
     }
 
     private void createControl() {
         for (int i = 0; i < 7; i++) {
             RowConstraints rowConstraints = new RowConstraints();
-            rowConstraints.setPercentHeight(100.0 / 7);
+            rowConstraints.setPercentHeight((double) HEIGHT / 7);
             clientGrid.getRowConstraints().add(rowConstraints);
         }
 
         for (int i = 0; i < 3; i++) {
             ColumnConstraints columnConstraints = new ColumnConstraints();
-            columnConstraints.setPercentWidth(100.0 / 3);
+            columnConstraints.setPercentWidth((double) WIDTH / 3);
             clientGrid.getColumnConstraints().add(columnConstraints);
         }
     }

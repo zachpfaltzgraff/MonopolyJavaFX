@@ -20,12 +20,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HelloApplication extends Application {
     private final GridPane gameGrid = new GridPane();
     private final GameBoard gameBoard = new GameBoard();
     private final int MAX_PLAYERS = 4;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(MAX_PLAYERS);
     @Override
     public void start(Stage stage) throws IOException {
         setGraphics();
@@ -38,40 +40,35 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
-        System.out.println("1");
-        new Thread(() -> {
-            try {
-                System.out.println("2");
-                connectClient();
-                System.out.println("3");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }).start();
+        connectClients();
     }
 
-    private void connectClient() throws IOException {
-        ServerSocket serverSocket = new ServerSocket(12345);
+    private void connectClients() {
+        try {
+            ServerSocket serverSocket = new ServerSocket(12345);
+            for (int i = 0; i < MAX_PLAYERS; i++) {
+                int finalI = i;
+                executorService.submit(() -> {
+                    try {
+                        Socket playerSocket = serverSocket.accept();
+                        System.out.println("Player connected");
 
-        System.out.println("4");
-        for (int i = 0; i < MAX_PLAYERS; i++) {
-            System.out.println("5");
-            int finalI = i;
-            new Thread(() -> {
-                System.out.println("6");
-                try {
-                    Socket playerSocket = serverSocket.accept();
-                    System.out.println("Player # " + finalI + " connected");
-
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
-                    String data;
-                    while((data = reader.readLine()) != null) {
-                        System.out.println("Received from player " + finalI + ": " + data);
+                        clientListener(playerSocket, finalI);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+                });
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void clientListener(Socket playerSocket, int i) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
+        String data;
+        while ((data = reader.readLine()) != null) {
+            System.out.println("Received: " + data + " from: " + i);
         }
     }
 
