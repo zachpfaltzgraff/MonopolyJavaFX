@@ -31,6 +31,10 @@ public class HelloApplication extends Application {
         stage.getIcons().add(new Image("file:sprites/icon.png"));
         stage.setScene(scene);
         stage.show();
+
+
+
+
     }
 
     private void createGameGrid() {
@@ -111,7 +115,9 @@ public class HelloApplication extends Application {
         gameGrid.add(imageView, 0, 0);
 
         // Middle Square
-        ImageView centerImage = new ImageView("file:middleLogo/icon.jpg");
+        ImageView centerImage = new ImageView("file:sprites/middleLogo.png");
+        centerImage.setFitHeight(100);
+        centerImage.setFitWidth(374);
         gameGrid.add(centerImage, 4, 4);
         GridPane.setHalignment(centerImage, HPos.CENTER);
 
