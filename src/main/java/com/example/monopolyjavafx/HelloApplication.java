@@ -16,10 +16,13 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 public class HelloApplication extends Application {
     private final GridPane gameGrid = new GridPane();
     GameBoard gameBoard = new GameBoard();
+    private final int MAX_PLAYERS = 4;
     @Override
     public void start(Stage stage) throws IOException {
         setGraphics();
@@ -32,8 +35,14 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
-
-
+        
+        ServerSocket serverSocket = new ServerSocket(12345);
+        int playerCount = 0;
+        while (playerCount < MAX_PLAYERS) {
+            Socket playerSocket = serverSocket.accept();
+            playerCount++;
+            System.out.println("Player # " + playerCount + " connected");
+        }
 
     }
 
@@ -75,9 +84,6 @@ public class HelloApplication extends Application {
                         GridPane.setHalignment(priceLabel, HPos.CENTER);
                         GridPane.setValignment(priceLabel, VPos.BOTTOM);
                     }
-                }
-                else {
-                    //label.setText("(" + row + "," + col + ")"); // debugging
                 }
 
                 gameGrid.add(label, row, col);
