@@ -5,4 +5,6 @@ module com.example.monopolyjavafx {
 
     opens com.example.monopolyjavafx to javafx.fxml;
     exports com.example.monopolyjavafx;
+    exports GameBoardImplement;
+    opens GameBoardImplement to javafx.fxml;
 }

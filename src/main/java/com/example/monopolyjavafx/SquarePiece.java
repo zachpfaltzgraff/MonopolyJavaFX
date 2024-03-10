@@ -1,10 +1,10 @@
-package com.example.monopolyjavafx;
+package GameBoardImplement;
 
 public class SquarePiece {
     private String name;
     private int type;
     private int occupied;
-    private double price;
+    private int price;
 
     SquarePiece() {
         this.name = "";
@@ -13,7 +13,7 @@ public class SquarePiece {
         this.price = -1;
     }
 
-    SquarePiece(String name, int type, double price) {
+    SquarePiece(String name, int type, int price) {
         this.name = name;
         this.type = type;
         this.occupied = 0;
@@ -45,11 +45,11 @@ public class SquarePiece {
         this.occupied = occupied;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 }

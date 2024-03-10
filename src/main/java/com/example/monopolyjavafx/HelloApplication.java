@@ -1,11 +1,11 @@
 package com.example.monopolyjavafx;
 
+import GameBoardImplement.GameBoard;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
-import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,7 +16,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class HelloApplication extends Application {
     private final GridPane gameGrid = new GridPane();
@@ -112,7 +111,7 @@ public class HelloApplication extends Application {
         gameGrid.add(imageView, 0, 0);
 
         // Middle Square
-        ImageView centerImage = new ImageView("file:sprites/icon.png");
+        ImageView centerImage = new ImageView("file:middleLogo/icon.jpg");
         gameGrid.add(centerImage, 4, 4);
         GridPane.setHalignment(centerImage, HPos.CENTER);
 
@@ -151,7 +150,6 @@ public class HelloApplication extends Application {
         gameGrid.add(cell, column, row);
         GridPane.setValignment(cell, VPos.TOP);
     }
-
 
     public static void main(String[] args) {
         launch();

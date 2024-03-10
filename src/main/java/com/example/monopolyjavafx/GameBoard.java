@@ -1,4 +1,4 @@
-package com.example.monopolyjavafx;
+package GameBoardImplement;
 /**
  * gameLogic
  * 0 = Property Squares
@@ -14,7 +14,7 @@ package com.example.monopolyjavafx;
 public class GameBoard extends SquarePiece {
     private SquarePiece[][] squarePieces = new SquarePiece[9][9];
 
-    GameBoard() {
+    public GameBoard() {
         initializePieces();
     }
 
@@ -100,7 +100,7 @@ public class GameBoard extends SquarePiece {
         return squarePieces[row][col].getName();
     }
 
-    public double getPrice(int row, int col) {
+    public int getPrice(int row, int col) {
         return squarePieces[row][col].getPrice();
     }
 }
