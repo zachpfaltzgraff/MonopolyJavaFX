@@ -1,7 +1,7 @@
 package com.example.monopolyjavafx;
 
-import GameBoardImplement.GameBoard;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -48,12 +48,14 @@ public class HelloApplication extends Application {
             ServerSocket serverSocket = new ServerSocket(12345);
             for (int i = 0; i < MAX_PLAYERS; i++) {
                 int finalI = i;
-                executorService.submit(() -> {
+                executorService.submit(() -> { // add in player
                     try {
                         Socket playerSocket = serverSocket.accept();
                         System.out.println("Player connected");
 
-                        clientListener(playerSocket, finalI);
+                        PlayerPiece player = new PlayerPiece();
+
+                        clientListener(player, playerSocket, finalI);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -64,12 +66,34 @@ public class HelloApplication extends Application {
         }
     }
 
-    private void clientListener(Socket playerSocket, int i) throws IOException {
+    private void clientListener(PlayerPiece player, Socket playerSocket, int i) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
         String data;
         while ((data = reader.readLine()) != null) {
-            System.out.println("Received: " + data + " from: " + i);
+            System.out.println(data);
+            if (data.equals("ready")) { // initialization
+                addPlayer(i, player);
+            }
+            else if (data.equals("roll")) {
+
+            }
         }
+    }
+
+    private void addPlayer(int i, PlayerPiece player) {
+        Platform.runLater(() -> {
+            Label label = new Label("Player " + (i + 1));
+            label.setFont(new Font("Lato", 16));
+            gameGrid.add(label, i + 1, 1);
+            GridPane.setHalignment(label, HPos.CENTER);
+            GridPane.setValignment(label, VPos.TOP);
+
+            Label moneyLabel = new Label(String.valueOf(player.getBalance()));
+            moneyLabel.setFont(new Font("Lato", 16));
+            gameGrid.add(moneyLabel, i + 1, 1);
+            GridPane.setHalignment(moneyLabel, HPos.CENTER);
+            GridPane.setValignment(moneyLabel, VPos.CENTER);
+        });
     }
 
     private void createGameGrid() {

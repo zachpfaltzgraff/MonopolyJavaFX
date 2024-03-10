@@ -1,6 +1,8 @@
 package com.example.monopolyjavafx;
 
 import javafx.application.Application;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -37,8 +39,13 @@ public class ClientApplication extends Application {
     private void addButtons() {
         Button readyUp = new Button("Ready Up");
         readyUp.setMinSize(20, 30);
-        readyUp.setOnAction(event -> output.println("hello")); // Send "hello" to server
+        readyUp.setOnAction(event -> {
+            output.println("ready");
+            readyUp.setDisable(true);
+        });
         clientGrid.add(readyUp, 1, 0);
+        GridPane.setHalignment(readyUp, HPos.CENTER);
+        GridPane.setValignment(readyUp, VPos.TOP);
     }
 
     private void createControl() {

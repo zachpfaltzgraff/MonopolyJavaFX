@@ -1,4 +1,5 @@
-package GameBoardImplement;
+package com.example.monopolyjavafx;
+
 /**
  * gameLogic
  * 0 = Property Squares

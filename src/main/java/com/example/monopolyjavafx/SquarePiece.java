@@ -1,4 +1,4 @@
-package GameBoardImplement;
+package com.example.monopolyjavafx;
 
 public class SquarePiece {
     private String name;
