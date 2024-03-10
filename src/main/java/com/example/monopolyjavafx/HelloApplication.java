@@ -6,6 +6,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -53,7 +55,7 @@ public class HelloApplication extends Application {
                         Socket playerSocket = serverSocket.accept();
                         System.out.println("Player connected");
 
-                        PlayerPiece player = new PlayerPiece();
+                        PlayerPiece player = new PlayerPiece(finalI);
 
                         clientListener(player, playerSocket, finalI);
                     } catch (IOException e) {
@@ -71,11 +73,14 @@ public class HelloApplication extends Application {
         String data;
         while ((data = reader.readLine()) != null) {
             System.out.println(data);
-            if (data.equals("ready")) { // initialization
+            if (data.equals("ready")) {
                 addPlayer(i, player);
             }
             else if (data.equals("roll")) {
-
+                Random random = new Random();
+                int roll1 = random.nextInt(6) + 1;
+                int roll2 = random.nextInt(6) + 1;
+                int roll = roll1 + roll2;
             }
         }
     }

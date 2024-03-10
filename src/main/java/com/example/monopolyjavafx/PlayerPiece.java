@@ -1,14 +1,22 @@
 package com.example.monopolyjavafx;
 
+import javafx.scene.image.Image;
+
 public class PlayerPiece {
+    private int playerNumber;
     private int curRow;
     private int curCol;
     private int balance;
 
-    PlayerPiece() {
+    PlayerPiece(int i) {
+        this.playerNumber = i;
         this.curRow = 0;
         this.curCol = 0;
         this.balance = 1500;
+    }
+
+    public int getPlayerNumber() {
+        return playerNumber;
     }
 
     public int getCurRow() {
