@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="690b0045-3270-4c8a-80be-f6f717fec808" name="Changes" comment="s">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/monopolyjavafx/ClientApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/monopolyjavafx/ClientApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/monopolyjavafx/ClientApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/monopolyjavafx/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/monopolyjavafx/HelloApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +52,7 @@
     </key>
   </component>
   <component name="RunManager" selected="Application.ClientApplication">
-    <configuration name="ClientApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="ClientApplication" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.monopolyjavafx.ClientApplication" />
       <module name="MonopolyJavaFX" />
       <extension name="coverage">
@@ -76,6 +78,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.ClientApplication" />
+      <item itemvalue="Application.HelloApplication" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.ClientApplication" />

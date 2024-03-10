@@ -15,13 +15,16 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 public class HelloApplication extends Application {
     private final GridPane gameGrid = new GridPane();
-    GameBoard gameBoard = new GameBoard();
+    private final GameBoard gameBoard = new GameBoard();
     private final int MAX_PLAYERS = 4;
     @Override
     public void start(Stage stage) throws IOException {
@@ -35,15 +38,41 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
-        
-        ServerSocket serverSocket = new ServerSocket(12345);
-        int playerCount = 0;
-        while (playerCount < MAX_PLAYERS) {
-            Socket playerSocket = serverSocket.accept();
-            playerCount++;
-            System.out.println("Player # " + playerCount + " connected");
-        }
+        System.out.println("1");
+        new Thread(() -> {
+            try {
+                System.out.println("2");
+                connectClient();
+                System.out.println("3");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+    }
 
+    private void connectClient() throws IOException {
+        ServerSocket serverSocket = new ServerSocket(12345);
+
+        System.out.println("4");
+        for (int i = 0; i < MAX_PLAYERS; i++) {
+            System.out.println("5");
+            int finalI = i;
+            new Thread(() -> {
+                System.out.println("6");
+                try {
+                    Socket playerSocket = serverSocket.accept();
+                    System.out.println("Player # " + finalI + " connected");
+
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
+                    String data;
+                    while((data = reader.readLine()) != null) {
+                        System.out.println("Received from player " + finalI + ": " + data);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
     }
 
     private void createGameGrid() {
