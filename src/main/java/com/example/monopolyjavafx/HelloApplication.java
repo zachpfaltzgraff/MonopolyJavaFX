@@ -19,8 +19,11 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,6 +33,8 @@ public class HelloApplication extends Application {
     private final GameBoard gameBoard = new GameBoard();
     private final int MAX_PLAYERS = 4;
     private final ExecutorService executorService = Executors.newFixedThreadPool(MAX_PLAYERS);
+    Button startButton;
+    private final List<Socket> clientSockets = new ArrayList<>();
     @Override
     public void start(Stage stage) throws IOException {
         setGraphics();
@@ -55,7 +60,19 @@ public class HelloApplication extends Application {
                         Socket playerSocket = serverSocket.accept();
                         System.out.println("Player connected");
 
+                        // Add the connected socket to the list
+                        clientSockets.add(playerSocket);
+
                         PlayerPiece player = new PlayerPiece(finalI);
+
+                        startButton.setOnAction(e -> {
+                            startButton.setVisible(false);
+                            try {
+                                serverSendToAll();
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        });
 
                         clientListener(player, playerSocket, finalI);
                     } catch (IOException e) {
@@ -85,6 +102,12 @@ public class HelloApplication extends Application {
         }
     }
 
+    private void serverSendToAll() throws IOException {
+        for (Socket socket : clientSockets) {
+            PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+            output.println("start");
+        }
+    }
     private void addPlayer(int i, PlayerPiece player) {
         Platform.runLater(() -> {
             Label label = new Label("Player " + (i + 1));
@@ -148,6 +171,9 @@ public class HelloApplication extends Application {
                 GridPane.setValignment(label, VPos.TOP);
             }
         }
+        startButton = new Button("Start Game");
+        gameGrid.add(startButton, 4, 5);
+        GridPane.setHalignment(startButton, HPos.CENTER);
     }
 
     private void setOutlines() {
