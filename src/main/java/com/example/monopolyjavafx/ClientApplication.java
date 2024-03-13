@@ -2,8 +2,11 @@ package com.example.monopolyjavafx;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,6 +28,7 @@ public class ClientApplication extends Application {
     PrintWriter output;
     private final int WIDTH = 300;
     private final int HEIGHT = 550;
+    private static boolean isStarted = false;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -53,21 +57,50 @@ public class ClientApplication extends Application {
         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String data;
         while ((data = reader.readLine()) != null) {
+            System.out.println(data);
             String finalData = data;
-            if (finalData.equals("start")) {
-                Platform.runLater(() -> {
+            Platform.runLater(() -> {
+                if (isStarted) {
+                    removeLabels(0, 6, 3, 1);
+                }
+                Label label = new Label(finalData);
+                label.setFont(new Font("Lato", 16));
+                label.setAlignment(Pos.CENTER);
+                clientGrid.add(label, 0, 6, 3, 1);
+
+                if (finalData.equals("start")) {
                     addActions();
-                });
-            }
+                    isStarted = true;
+                    Label updatesLabel = new Label("Game Updates: ");
+                    updatesLabel.setFont(new Font("Lato", 16));
+                    clientGrid.add(updatesLabel, 0, 5, 3, 1);
+                    GridPane.setHalignment(updatesLabel, HPos.LEFT);
+                    GridPane.setValignment(updatesLabel, VPos.BOTTOM);
+                }
+            });
         }
     }
 
+    private void removeLabels(int colIndex, int rowIndex, int colSpan, int rowSpan) {
+        ObservableList<Node> children = clientGrid.getChildren();
+        children.removeIf(node ->
+                GridPane.getColumnIndex(node) >= colIndex &&
+                        GridPane.getColumnIndex(node) < colIndex + colSpan &&
+                        GridPane.getRowIndex(node) >= rowIndex &&
+                        GridPane.getRowIndex(node) < rowIndex + rowSpan
+        );
+    }
+
     private void addActions() {
-        Label label = new Label("Roll Dice: ");
-        label.setFont(new Font("Lato", 16));
-        clientGrid.add(label, 0, 1);
-        GridPane.setHalignment(label, HPos.LEFT);
-        GridPane.setValignment(label, VPos.TOP);
+        Button rollDice = new Button("Roll Dice");
+        rollDice.setFont(new Font("Lato", 16));
+        clientGrid.add(rollDice, 0, 1);
+        GridPane.setHalignment(rollDice, HPos.LEFT);
+        GridPane.setValignment(rollDice, VPos.TOP);
+
+        rollDice.setOnAction(e -> {
+            output.println("roll");
+        });
     }
 
     private void addButtons() {

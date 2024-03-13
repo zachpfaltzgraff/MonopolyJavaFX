@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
@@ -30,7 +31,9 @@ import java.util.concurrent.Executors;
 
 public class HelloApplication extends Application {
     private final GridPane gameGrid = new GridPane();
+    private GridPane[][] squareGrid = new GridPane[9][9];
     private final GameBoard gameBoard = new GameBoard();
+    private Rectangle[] box = new Rectangle[4];
     private final int MAX_PLAYERS = 4;
     private final ExecutorService executorService = Executors.newFixedThreadPool(MAX_PLAYERS);
     Button startButton;
@@ -68,7 +71,7 @@ public class HelloApplication extends Application {
                         startButton.setOnAction(e -> {
                             startButton.setVisible(false);
                             try {
-                                serverSendToAll();
+                                serverSendToAll("start");
                             } catch (IOException ex) {
                                 throw new RuntimeException(ex);
                             }
@@ -95,17 +98,57 @@ public class HelloApplication extends Application {
             }
             else if (data.equals("roll")) {
                 Random random = new Random();
-                int roll1 = random.nextInt(6) + 1;
-                int roll2 = random.nextInt(6) + 1;
+                int roll1 = random.nextInt(4) + 1;
+                int roll2 = random.nextInt(4) + 1;
                 int roll = roll1 + roll2;
+
+                rollDice(roll, i, player);
             }
         }
     }
 
-    private void serverSendToAll() throws IOException {
+    private void rollDice(int roll, int playerIndex, PlayerPiece player) throws IOException {
+        playerIndex++;
+        serverSendToAll("Player " + playerIndex + " rolls a " + roll);
+        int curRow = player.getCurRow();
+        int curCol = player.getCurCol();
+
+        for (int i = 0; i < roll; i++) {
+            if (curRow < 8 && curCol == 0 ) {
+                curRow++;
+            } else if (curRow == 8 && curCol < 8) {
+                curCol++;
+            } else if (curRow > 0 && curCol == 8) {
+                curRow--;
+            } else if (curRow == 0 && curCol > 0) {
+                curCol--;
+            }
+        }
+
+        int finalCurCol = curCol;
+        int finalCurRow = curRow;
+        Platform.runLater(() -> {
+            squareGrid[player.getCurRow()][player.getCurCol()].getChildren().remove(box[player.getPlayerNumber()]);
+
+            player.setCurCol(finalCurCol);
+            player.setCurRow(finalCurRow);
+
+            if (player.getPlayerNumber() == 0) {
+                squareGrid[player.getCurRow()][player.getCurCol()].add(box[player.getPlayerNumber()], 0, 0);
+            } else if (player.getPlayerNumber() == 1) {
+                squareGrid[player.getCurRow()][player.getCurCol()].add(box[player.getPlayerNumber()], 1, 0);
+            } else if (player.getPlayerNumber() == 2) {
+                squareGrid[player.getCurRow()][player.getCurCol()].add(box[player.getPlayerNumber()], 0, 1);
+            } else if (player.getPlayerNumber() == 3) {
+                squareGrid[player.getCurRow()][player.getCurCol()].add(box[player.getPlayerNumber()], 1, 1);
+            }
+        });
+    }
+
+    private void serverSendToAll(String message) throws IOException {
         for (Socket socket : clientSockets) {
             PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
-            output.println("start");
+            output.println(message);
         }
     }
     private void addPlayer(int i, PlayerPiece player) {
@@ -116,11 +159,41 @@ public class HelloApplication extends Application {
             GridPane.setHalignment(label, HPos.CENTER);
             GridPane.setValignment(label, VPos.TOP);
 
-            Label moneyLabel = new Label(String.valueOf(player.getBalance()));
+            Label moneyLabel = new Label(String.valueOf("$" + player.getBalance()));
             moneyLabel.setFont(new Font("Lato", 16));
             gameGrid.add(moneyLabel, i + 1, 1);
             GridPane.setHalignment(moneyLabel, HPos.CENTER);
             GridPane.setValignment(moneyLabel, VPos.CENTER);
+
+            box[i] = new Rectangle(15, 15);
+            if (i == 0) {
+                box[i].setFill(Color.RED);
+            } else if (i == 1) {
+                box[i].setFill(Color.BLUE);
+            } else if (i == 2) {
+                box[i].setFill(Color.BLACK);
+            } else if (i == 3) {
+                box[i].setFill(Color.CORAL);
+            }
+
+            if (i == 0) {
+                squareGrid[0][0].add(box[i], 0, 0);
+                GridPane.setValignment(box[i], VPos.BOTTOM);
+                GridPane.setHalignment(box[i], HPos.RIGHT);
+            } else if (i == 1) {
+                squareGrid[0][0].add(box[i], 1, 0);
+                GridPane.setValignment(box[i], VPos.BOTTOM);
+                GridPane.setHalignment(box[i], HPos.LEFT);
+            }else if (i == 2) {
+                squareGrid[0][0].add(box[i], 0, 1);
+                GridPane.setValignment(box[i], VPos.TOP);
+                GridPane.setHalignment(box[i], HPos.RIGHT);
+            }else if (i == 3) {
+                squareGrid[0][0].add(box[i], 1, 1);
+                GridPane.setValignment(box[i], VPos.TOP);
+                GridPane.setHalignment(box[i], HPos.LEFT);
+            }
+
         });
     }
 
@@ -150,6 +223,7 @@ public class HelloApplication extends Application {
                 Label label = new Label();
                 label.setWrapText(true);
                 label.setAlignment(Pos.CENTER);
+
                 if (!gameBoard.getName(row, col).isEmpty()) {
                     label.setText(gameBoard.getName(row, col));
 
@@ -169,6 +243,19 @@ public class HelloApplication extends Application {
                 label.setTextAlignment(TextAlignment.CENTER);
                 GridPane.setHalignment(label, HPos.CENTER);
                 GridPane.setValignment(label, VPos.TOP);
+
+                squareGrid[row][col] = new GridPane();
+                for (int i = 0; i < 2; i++) {
+                    RowConstraints rowConstraints = new RowConstraints();
+                    rowConstraints.setPercentHeight(100.0 / 2);
+                    squareGrid[row][col].getRowConstraints().add(rowConstraints);
+                }
+                for (int i = 0; i < 2; i++) {
+                    ColumnConstraints columnConstraints = new ColumnConstraints();
+                    columnConstraints.setPercentWidth(100.0 / 2);
+                    squareGrid[row][col].getColumnConstraints().add(columnConstraints);
+                }
+                gameGrid.add(squareGrid[row][col], row, col);
             }
         }
         startButton = new Button("Start Game");
@@ -227,7 +314,6 @@ public class HelloApplication extends Application {
         addTopBottomCell(8, 7, "red", "side");
         addTopBottomCell(8, 1, "green", "side");
         addTopBottomCell(8, 3, "green", "side");
-
     }
 
     private void addTopBottomCell(int column, int row, String color, String topOrSide) {
