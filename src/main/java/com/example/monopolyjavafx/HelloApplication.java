@@ -99,8 +99,7 @@ public class HelloApplication extends Application {
             else if (data.equals("roll")) {
                 Random random = new Random();
                 int roll1 = random.nextInt(4) + 1;
-                int roll2 = random.nextInt(4) + 1;
-                int roll = roll1 + roll2;
+                int roll2 = random.nextInt(4) + 1;                int roll = roll1 + roll2;
 
                 rollDice(roll, i, player);
             }
